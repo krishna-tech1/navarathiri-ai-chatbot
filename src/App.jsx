@@ -389,6 +389,93 @@ function App() {
 
   const conversationEndRef = useRef(null);
   const activeAudioRef = useRef(null);
+  const audioCtxRef = useRef(null);
+  const activeSourceRef = useRef(null);
+
+  /* Devotional Voice Persona Acoustic Profiles */
+  const VOICE_PROFILES = {
+    pallavi: {
+      id: "pallavi",
+      displayName: "பல்லவி (Pallavi)",
+      gender: "female",
+      lang: "tamil",
+      speechPitch: 1.15,
+      speechRate: 0.98,
+      matchTerms: ["pallavi", "tamil", "ta-in", "ta", "india", "female"],
+      detune: 160,
+      eq: { low: 0, high: 3 },
+    },
+    valluvar: {
+      id: "valluvar",
+      displayName: "வள்ளுவர் (Valluvar)",
+      gender: "male",
+      lang: "tamil",
+      speechPitch: 0.76,
+      speechRate: 0.90,
+      matchTerms: ["valluvar", "male", "tamil", "ta-in", "ta"],
+      detune: -280,
+      eq: { low: 6, high: -3 },
+    },
+    saranya: {
+      id: "saranya",
+      displayName: "சரண்யா (Saranya)",
+      gender: "female",
+      lang: "tamil",
+      speechPitch: 0.96,
+      speechRate: 0.85,
+      matchTerms: ["saranya", "tamil", "ta-lk", "ta-in", "ta", "female"],
+      detune: -40,
+      eq: { low: 2, high: -1 },
+    },
+    neerja: {
+      id: "neerja",
+      displayName: "Neerja",
+      gender: "female",
+      lang: "english",
+      speechPitch: 1.12,
+      speechRate: 0.98,
+      matchTerms: ["neerja", "en-in", "india", "female"],
+      detune: 140,
+      eq: { low: 0, high: 2 },
+    },
+    prabhat: {
+      id: "prabhat",
+      displayName: "Prabhat",
+      gender: "male",
+      lang: "english",
+      speechPitch: 0.82,
+      speechRate: 0.94,
+      matchTerms: ["prabhat", "en-in", "india", "male"],
+      detune: -240,
+      eq: { low: 5, high: -2 },
+    },
+    ava: {
+      id: "ava",
+      displayName: "Ava",
+      gender: "female",
+      lang: "english",
+      speechPitch: 1.05,
+      speechRate: 1.00,
+      matchTerms: ["ava", "en-us", "natural", "female"],
+      detune: 60,
+      eq: { low: 0, high: 1 },
+    },
+  };
+
+  /* Pre-cache browser voices */
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.speechSynthesis) {
+      const load = () => {
+        try {
+          window.speechSynthesis.getVoices();
+        } catch (e) {}
+      };
+      load();
+      if (typeof window.speechSynthesis.onvoiceschanged !== "undefined") {
+        window.speechSynthesis.onvoiceschanged = load;
+      }
+    }
+  }, []);
 
   /* Prime / Unlock browser audio on user gesture */
   const unlockAudio = () => {
@@ -402,11 +489,21 @@ function App() {
           window.__audioUnlocked = true;
         }).catch(() => {});
       }
+      if (audioCtxRef.current && audioCtxRef.current.state === "suspended") {
+        audioCtxRef.current.resume().catch(() => {});
+      }
     } catch (e) {}
   };
 
   /* Stop Speaking */
   const stopSpeaking = () => {
+    if (activeSourceRef.current) {
+      try {
+        activeSourceRef.current.stop();
+        activeSourceRef.current.disconnect();
+      } catch (e) {}
+      activeSourceRef.current = null;
+    }
     if (activeAudioRef.current) {
       try {
         activeAudioRef.current.pause();
@@ -414,7 +511,7 @@ function App() {
       } catch (e) {}
       activeAudioRef.current = null;
     }
-    if (window.speechSynthesis) {
+    if (typeof window !== "undefined" && window.speechSynthesis) {
       try {
         window.speechSynthesis.cancel();
       } catch (e) {}
@@ -423,68 +520,169 @@ function App() {
     setSpeakingConversationId(null);
   };
 
-  /* Browser SpeechSynthesis Fallback */
-  const fallbackBrowserSpeak = (text, conversationId = null) => {
-    if (!window.speechSynthesis) {
-      setIsSpeaking(false);
-      setSpeakingConversationId(null);
-      return;
-    }
+  const [selectedVoice, setSelectedVoice] = useState(() => {
+    return localStorage.getItem("navarathiri_voice") || "pallavi";
+  });
 
+  /* Play Audio via Server with Web Audio Acoustic Persona Processing */
+  const speakViaServerAudio = async (cleanText, profile, conversationId) => {
     try {
-      window.speechSynthesis.cancel();
-      window.speechSynthesis.resume();
+      const langParam = language === "tamil" ? "ta" : "en";
+      const audioUrl = `/api/tts?text=${encodeURIComponent(cleanText)}&lang=${langParam}&voice=${encodeURIComponent(profile.id)}&t=${Date.now()}`;
 
-      const voices = window.speechSynthesis.getVoices();
-      const speech = new SpeechSynthesisUtterance(text);
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (AudioCtx) {
+        if (!audioCtxRef.current) {
+          audioCtxRef.current = new AudioCtx();
+        }
+        const ctx = audioCtxRef.current;
+        if (ctx.state === "suspended") {
+          await ctx.resume();
+        }
 
-      if (language === "tamil") {
-        const tamilVoice = voices.find((v) =>
-          v.lang?.toLowerCase().startsWith("ta")
-        );
-        if (tamilVoice) {
-          speech.voice = tamilVoice;
-          speech.lang = tamilVoice.lang;
-        } else {
-          speech.lang = "ta-IN";
+        const resp = await fetch(audioUrl);
+        if (!resp.ok) throw new Error("Server TTS status: " + resp.status);
+        const arrayBuf = await resp.arrayBuffer();
+        const audioBuf = await ctx.decodeAudioData(arrayBuf);
+
+        const sourceNode = ctx.createBufferSource();
+        sourceNode.buffer = audioBuf;
+
+        // Apply pitch detuning
+        if (sourceNode.detune && typeof profile.detune === "number") {
+          sourceNode.detune.value = profile.detune;
         }
-      } else {
-        const englishVoice = voices.find((v) =>
-          v.lang?.toLowerCase().startsWith("en")
-        );
-        if (englishVoice) {
-          speech.voice = englishVoice;
-          speech.lang = englishVoice.lang;
-        } else {
-          speech.lang = "en-US";
-        }
+
+        // Apply acoustic persona equalizer
+        const bassNode = ctx.createBiquadFilter();
+        bassNode.type = "lowshelf";
+        bassNode.frequency.value = 320;
+        bassNode.gain.value = profile.eq.low;
+
+        const trebleNode = ctx.createBiquadFilter();
+        trebleNode.type = "highshelf";
+        trebleNode.frequency.value = 3000;
+        trebleNode.gain.value = profile.eq.high;
+
+        sourceNode.connect(bassNode);
+        bassNode.connect(trebleNode);
+        trebleNode.connect(ctx.destination);
+
+        activeSourceRef.current = sourceNode;
+
+        sourceNode.onended = () => {
+          setIsSpeaking(false);
+          setSpeakingConversationId(null);
+          activeSourceRef.current = null;
+        };
+
+        setIsSpeaking(true);
+        setSpeakingConversationId(conversationId);
+        sourceNode.start(0);
+        return;
       }
 
-      speech.rate = 0.95;
-      speech.onstart = () => {
+      // Fallback HTML5 Audio element
+      const audio = new Audio(audioUrl);
+      activeAudioRef.current = audio;
+      audio.onplay = () => {
         setIsSpeaking(true);
         setSpeakingConversationId(conversationId);
       };
-      speech.onend = () => {
+      audio.onended = () => {
         setIsSpeaking(false);
         setSpeakingConversationId(null);
+        activeAudioRef.current = null;
       };
-      speech.onerror = () => {
+      audio.onerror = () => {
         setIsSpeaking(false);
         setSpeakingConversationId(null);
+        activeAudioRef.current = null;
       };
-
-      window.speechSynthesis.speak(speech);
+      await audio.play();
     } catch (err) {
-      console.warn("Browser SpeechSynthesis failed:", err);
+      console.warn("Server audio playback failed:", err);
       setIsSpeaking(false);
       setSpeakingConversationId(null);
     }
   };
 
-  const [selectedVoice, setSelectedVoice] = useState(() => {
-    return localStorage.getItem("navarathiri_voice") || "pallavi";
-  });
+  /* Primary High-Fidelity Speak */
+  const speakAnswer = async (text, conversationId = null) => {
+    if (!text) return;
+
+    stopSpeaking();
+    setIsSpeaking(true);
+    setSpeakingConversationId(conversationId);
+
+    const cleanText = String(text).replace(/[*#_`~>]/g, "").trim();
+    const profile = VOICE_PROFILES[selectedVoice] || VOICE_PROFILES.pallavi;
+    const isTamil = language === "tamil";
+
+    // 1. Try Browser SpeechSynthesis first (direct on client, zero 403 blocks)
+    if (typeof window !== "undefined" && window.speechSynthesis) {
+      try {
+        const voices = window.speechSynthesis.getVoices();
+        const langVoices = voices.filter((v) => {
+          const vl = (v.lang || "").toLowerCase();
+          return isTamil ? vl.startsWith("ta") : vl.startsWith("en");
+        });
+
+        if (langVoices.length > 0) {
+          let matchedVoice = null;
+          for (const term of profile.matchTerms) {
+            matchedVoice = langVoices.find((v) =>
+              (v.name || "").toLowerCase().includes(term)
+            );
+            if (matchedVoice) break;
+          }
+          if (!matchedVoice) {
+            if (profile.gender === "male") {
+              matchedVoice =
+                langVoices.find((v) =>
+                  (v.name || "").toLowerCase().includes("male")
+                ) || langVoices[0];
+            } else {
+              matchedVoice =
+                langVoices.find((v) =>
+                  (v.name || "").toLowerCase().includes("female")
+                ) || langVoices[0];
+            }
+          }
+
+          window.speechSynthesis.cancel();
+          window.speechSynthesis.resume();
+
+          const utterance = new SpeechSynthesisUtterance(cleanText);
+          utterance.voice = matchedVoice;
+          utterance.lang = matchedVoice.lang || (isTamil ? "ta-IN" : "en-IN");
+          utterance.pitch = profile.speechPitch;
+          utterance.rate = profile.speechRate;
+
+          utterance.onstart = () => {
+            setIsSpeaking(true);
+            setSpeakingConversationId(conversationId);
+          };
+          utterance.onend = () => {
+            setIsSpeaking(false);
+            setSpeakingConversationId(null);
+          };
+          utterance.onerror = (e) => {
+            console.warn("SpeechSynthesis error, falling back to server audio:", e);
+            speakViaServerAudio(cleanText, profile, conversationId);
+          };
+
+          window.speechSynthesis.speak(utterance);
+          return;
+        }
+      } catch (synthErr) {
+        console.warn("SpeechSynthesis error:", synthErr);
+      }
+    }
+
+    // 2. Secondary: Server Audio with Web Audio Acoustic Persona Engine
+    speakViaServerAudio(cleanText, profile, conversationId);
+  };
 
   /* Voice Preview */
   const previewVoice = (voiceKey) => {
@@ -507,47 +705,6 @@ function App() {
         : "வணக்கம்! நான் பல்லவி, உங்கள் அன்பான நவசக்தி உதவியாளர்.";
 
     speakAnswer(sample);
-  };
-
-  /* Primary High-Fidelity Speak (Native Audio via Server TTS with Fallback) */
-  const speakAnswer = async (text, conversationId = null) => {
-    if (!text) return;
-
-    stopSpeaking();
-    setIsSpeaking(true);
-    setSpeakingConversationId(conversationId);
-
-    try {
-      const cleanText = String(text).replace(/[*#_`~>]/g, "").trim();
-      const langParam = language === "tamil" ? "ta" : "en";
-      const voiceParam = selectedVoice;
-      const audioUrl = `/api/tts?text=${encodeURIComponent(cleanText)}&lang=${langParam}&voice=${encodeURIComponent(voiceParam)}&t=${Date.now()}`;
-      
-      const audio = new Audio(audioUrl);
-      activeAudioRef.current = audio;
-
-      audio.onplay = () => {
-        setIsSpeaking(true);
-        setSpeakingConversationId(conversationId);
-      };
-
-      audio.onended = () => {
-        setIsSpeaking(false);
-        setSpeakingConversationId(null);
-        activeAudioRef.current = null;
-      };
-
-      audio.onerror = (e) => {
-        console.warn("Server TTS audio failed, trying browser speech fallback:", e);
-        activeAudioRef.current = null;
-        fallbackBrowserSpeak(text, conversationId);
-      };
-
-      await audio.play();
-    } catch (err) {
-      console.warn("Audio play() blocked or interrupted, trying browser fallback:", err);
-      fallbackBrowserSpeak(text, conversationId);
-    }
   };
 
   /* Ask Question */

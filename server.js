@@ -260,6 +260,7 @@ app.get("/api/tts", async (req, res) => {
     }
     res.setHeader("Content-Type", "audio/mpeg");
     res.setHeader("Cache-Control", "public, max-age=86400");
+    res.setHeader("X-Voice-Id", voice);
     res.setHeader("Content-Length", audioBuffer.length);
     res.send(audioBuffer);
   } catch (err) {
@@ -282,6 +283,7 @@ app.post("/api/tts", async (req, res) => {
     }
     res.setHeader("Content-Type", "audio/mpeg");
     res.setHeader("Cache-Control", "public, max-age=86400");
+    res.setHeader("X-Voice-Id", voice);
     res.setHeader("Content-Length", audioBuffer.length);
     res.send(audioBuffer);
   } catch (err) {

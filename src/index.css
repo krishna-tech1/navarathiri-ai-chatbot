@@ -6,10 +6,13 @@ body,
 }
 
 html {
-  background: #ffffff;
+  background: #0d0705;
 }
 
 body {
   margin: 0;
-  background: #ffffff;
+  background: #0d0705;
+  color: #fdf6ec;
+  font-family: "Plus Jakarta Sans", "Noto Sans Tamil", system-ui, -apple-system, sans-serif;
+  overflow-x: hidden;
 }

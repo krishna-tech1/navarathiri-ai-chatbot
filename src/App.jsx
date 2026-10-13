@@ -9,11 +9,15 @@ import { askGemini } from "./services/geminiService";
 
 const NAVARATHIRI_DAYS = {
   1: {
-    goddess: "Shailaputri",
-    goddessTamil: "சைலபுத்திரி",
-    color: "Golden Yellow",
-    colorTamil: "பொன் மஞ்சள்",
-    colorCode: "#f59e0b",
+    day: 1,
+    goddess: "Maa Shailputri",
+    goddessTamil: "அன்னை சைலபுத்திரி",
+    date: "Sunday, October 11, 2026",
+    dateTamil: "ஞாயிறு, அக்டோபர் 11, 2026",
+    dateKey: "2026-10-11",
+    color: "Orange",
+    colorTamil: "ஆரஞ்சு",
+    colorCode: "#ea580c",
     vahana: "Nandi (Bull)",
     vahanaTamil: "நந்தி பகவான்",
     mantra: "ॐ देवी शैलपुत्र्यै नमः",
@@ -21,11 +25,15 @@ const NAVARATHIRI_DAYS = {
     significanceTa: "இமயத்தின் மகள். தூய்மை, பொறுமை மற்றும் முதல் ஆன்மீக விழிப்புணர்வின் சின்னம்.",
   },
   2: {
-    goddess: "Brahmacharini",
-    goddessTamil: "பிரம்மசாரிணி",
-    color: "Peacock Green",
-    colorTamil: "பச்சை",
-    colorCode: "#10b981",
+    day: 2,
+    goddess: "Maa Brahmacharini",
+    goddessTamil: "அன்னை பிரம்மசாரிணி",
+    date: "Monday, October 12, 2026",
+    dateTamil: "திங்கள், அக்டோபர் 12, 2026",
+    dateKey: "2026-10-12",
+    color: "White",
+    colorTamil: "வெள்ளை",
+    colorCode: "#f8fafc",
     vahana: "Barefoot (Ascetic)",
     vahanaTamil: "தவக்கோலம்",
     mantra: "ॐ देवी ब्रह्मचारिण्यै नमः",
@@ -33,11 +41,15 @@ const NAVARATHIRI_DAYS = {
     significanceTa: "தவத்தின் தாய். மன உறுதி, அடக்கம் மற்றும் தியாகத்தின் வடிவமாக விளங்குபவர்.",
   },
   3: {
-    goddess: "Chandraghanta",
-    goddessTamil: "சந்திரகாந்தா",
-    color: "Ash Grey & Silver",
-    colorTamil: "சாம்பல் நிறம்",
-    colorCode: "#94a3b8",
+    day: 3,
+    goddess: "Maa Chandraghanta",
+    goddessTamil: "அன்னை சந்திரகாந்தா",
+    date: "Tuesday, October 13, 2026",
+    dateTamil: "செவ்வாய், அக்டோபர் 13, 2026",
+    dateKey: "2026-10-13",
+    color: "Red",
+    colorTamil: "சிவப்பு",
+    colorCode: "#dc2626",
     vahana: "Tiger / Lion",
     vahanaTamil: "புலி வாகனம்",
     mantra: "ॐ देवी चन्द्रघण्टायै नमः",
@@ -45,11 +57,15 @@ const NAVARATHIRI_DAYS = {
     significanceTa: "பிறைச்சந்திரன் கொண்டவள். தைரியம் தந்து அச்சங்களை அகற்றி தீமைகளை அழிப்பவள்.",
   },
   4: {
-    goddess: "Kushmanda",
-    goddessTamil: "கூஷ்மாண்டா",
-    color: "Radiant Orange",
-    colorTamil: "ஆரஞ்சு",
-    colorCode: "#ea580c",
+    day: 4,
+    goddess: "Maa Kushmanda",
+    goddessTamil: "அன்னை கூஷ்மாண்டா",
+    date: "Wednesday, October 14, 2026",
+    dateTamil: "புதன், அக்டோபர் 14, 2026",
+    dateKey: "2026-10-14",
+    color: "Royal Blue",
+    colorTamil: "ராயல் நீலம்",
+    colorCode: "#2563eb",
     vahana: "Lion",
     vahanaTamil: "சிம்ம வாகனம்",
     mantra: "ॐ देवी कूष्माण्डायै नमः",
@@ -57,11 +73,15 @@ const NAVARATHIRI_DAYS = {
     significanceTa: "புன்னகையால் பிரபஞ்சத்தை உருவாக்கியவள்; சூரியனின் பிரகாசத்தை அளிப்பவள்.",
   },
   5: {
-    goddess: "Skandamata",
-    goddessTamil: "ஸ்கந்தமாதா",
-    color: "Sacred White",
-    colorTamil: "வெள்ளை",
-    colorCode: "#f8fafc",
+    day: 5,
+    goddess: "Maa Skandamata",
+    goddessTamil: "அன்னை ஸ்கந்தமாதா",
+    date: "Thursday, October 15, 2026",
+    dateTamil: "வியாழன், அக்டோபர் 15, 2026",
+    dateKey: "2026-10-15",
+    color: "Yellow",
+    colorTamil: "மஞ்சள்",
+    colorCode: "#f59e0b",
     vahana: "Lion",
     vahanaTamil: "சிம்ம வாகனம்",
     mantra: "ॐ देवी स्कन्दमात्रे नमः",
@@ -69,11 +89,15 @@ const NAVARATHIRI_DAYS = {
     significanceTa: "முருகனின் தாய். தாய்மையின் கருணை, பேரறிவு மற்றும் முக்தியை அருள்பவள்.",
   },
   6: {
-    goddess: "Katyayani",
-    goddessTamil: "காத்யாயினி",
-    color: "Ruby Red",
-    colorTamil: "சிவப்பு",
-    colorCode: "#dc2626",
+    day: 6,
+    goddess: "Maa Katyayani",
+    goddessTamil: "அன்னை காத்யாயினி",
+    date: "Friday, October 16, 2026",
+    dateTamil: "வெள்ளி, அக்டோபர் 16, 2026",
+    dateKey: "2026-10-16",
+    color: "Green",
+    colorTamil: "பச்சை",
+    colorCode: "#16a34a",
     vahana: "Lion",
     vahanaTamil: "சிம்ம வாகனம்",
     mantra: "ॐ देवी कात्यायन्यै नमः",
@@ -81,11 +105,15 @@ const NAVARATHIRI_DAYS = {
     significanceTa: "காத்யாயன முனிவரின் மகள்; மகிஷாசுரனை வதம் செய்த வீரத்தின் தெய்வம்.",
   },
   7: {
-    goddess: "Kalaratri",
-    goddessTamil: "காலராத்திரி",
-    color: "Royal Midnight Blue",
-    colorTamil: "நீலம்",
-    colorCode: "#2563eb",
+    day: 7,
+    goddess: "Maa Kalaratri",
+    goddessTamil: "அன்னை காலராத்திரி",
+    date: "Saturday, October 17, 2026",
+    dateTamil: "சனி, அக்டோபர் 17, 2026",
+    dateKey: "2026-10-17",
+    color: "Grey",
+    colorTamil: "சாம்பல்",
+    colorCode: "#6b7280",
     vahana: "Donkey / Dark Steed",
     vahanaTamil: "கழுதை வாகனம்",
     mantra: "ॐ देवी कालरात्र्यै नमः",
@@ -93,11 +121,15 @@ const NAVARATHIRI_DAYS = {
     significanceTa: "இருளையும் அஞ்ஞானத்தையும் அழிக்கும் வீர காளி. பக்தர்களை காக்கும் சுபங்கரி.",
   },
   8: {
-    goddess: "Mahagauri",
-    goddessTamil: "மஹாகௌரி",
-    color: "Pink & Auspicious Saffron",
-    colorTamil: "இளஞ்சிவப்பு",
-    colorCode: "#ec4899",
+    day: 8,
+    goddess: "Maa Mahagauri",
+    goddessTamil: "அன்னை மஹாகௌரி",
+    date: "Sunday, October 18, 2026",
+    dateTamil: "ஞாயிறு, அக்டோபர் 18, 2026",
+    dateKey: "2026-10-18",
+    color: "Purple",
+    colorTamil: "ஊதா / பர்பிள்",
+    colorCode: "#9333ea",
     vahana: "White Bull",
     vahanaTamil: "வெள்ளை நந்தி",
     mantra: "ॐ देवी महागौर्यै नमः",
@@ -105,17 +137,59 @@ const NAVARATHIRI_DAYS = {
     significanceTa: "தூய்மை மற்றும் அமைதியின் வடிவம். பாவங்களை நீக்கி மன அமைதி தருபவள்.",
   },
   9: {
-    goddess: "Siddhidatri",
-    goddessTamil: "சித்திதாத்ரி",
-    color: "Imperial Purple",
-    colorTamil: "ஊதா",
-    colorCode: "#7c3aed",
+    day: 9,
+    goddess: "Maa Siddhidatri",
+    goddessTamil: "அன்னை சித்திதாத்ரி",
+    date: "Monday, October 19, 2026",
+    dateTamil: "திங்கள், அக்டோபர் 19, 2026",
+    dateKey: "2026-10-19",
+    color: "Peacock Green",
+    colorTamil: "மயில் பச்சை",
+    colorCode: "#0d9488",
     vahana: "Lotus & Lion",
     vahanaTamil: "தாமரை ஆசனம்",
     mantra: "ॐ देवी सिद्धिदात्र्यै नमः",
     significanceEn: "Granter of all 26 supernatural attainments (Siddhis). The culmination of divine bliss.",
     significanceTa: "அனைத்து சித்துக்களையும் ஞானத்தையும் அருள்பவள்; நவசக்தியின் நிறைவு வடிவம்.",
   },
+  10: {
+    day: 10,
+    goddess: "Vijayadashami / Dussehra",
+    goddessTamil: "விஜயதசமி / தசரா",
+    date: "Tuesday, October 20, 2026",
+    dateTamil: "செவ்வாய், அக்டோபர் 20, 2026",
+    dateKey: "2026-10-20",
+    color: "Festive Red & Gold",
+    colorTamil: "மங்கள சிவப்பு & பொன்",
+    colorCode: "#e11d48",
+    vahana: "Auspicious Victory",
+    vahanaTamil: "வெற்றித் திருநாள்",
+    mantra: "ॐ विजयायै नमः",
+    significanceEn: "Triumph of Good over Evil (Durga defeats Mahishasura; Rama defeats Ravana). Auspicious day of victory and Vidyarambham.",
+    significanceTa: "தீமையை அழித்து நன்மையின் வெற்றி (மகிஷாசுர மர்த்தினி மற்றும் ராவண வதம்). வித்யாரம்பம் மற்றும் சுப காரியங்கள் தொடங்கும் திருநாள்.",
+  },
+};
+
+const getIndianDateKey = () => {
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Kolkata",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(new Date());
+};
+
+const DATE_TO_NAVARATHIRI_DAY = {
+  "2026-10-11": 1,
+  "2026-10-12": 2,
+  "2026-10-13": 3,
+  "2026-10-14": 4,
+  "2026-10-15": 5,
+  "2026-10-16": 6,
+  "2026-10-17": 7,
+  "2026-10-18": 8,
+  "2026-10-19": 9,
+  "2026-10-20": 10,
 };
 
 /* =========================================================
@@ -136,6 +210,18 @@ const DEVOTIONAL_PROMPTS = [
     icon: "👨‍💻",
     textEn: "Who created you and what is your purpose?",
     textTa: "உங்களை உருவாக்கியவர் யார்?",
+  },
+  {
+    category: "navarathiri",
+    icon: "🎨",
+    textEn: "What is today's date and Navarathiri colour?",
+    textTa: "இன்றைய தேதி மற்றும் நவராத்திரி நிறம் என்ன?",
+  },
+  {
+    category: "navarathiri",
+    icon: "🌸",
+    textEn: "What day of Navarathiri is today and which Goddess is worshipped?",
+    textTa: "இன்று நவராத்திரியின் எத்தனையாவது நாள்? எந்த அம்மன் வழிபடப்படுகிறார்?",
   },
   {
     category: "navarathiri",
@@ -248,11 +334,76 @@ const DEVOTIONAL_PROMPTS = [
 const detectVisual = (question) => {
   const q = String(question || "").toLowerCase();
 
-  /* Navarathiri day match */
-  const dayMatch = q.match(/(?:day|நாள்)\s*(\d)/);
+  /* 0. TODAY / CURRENT INDIAN DATE / TODAY'S COLOUR DETECTION (IST) */
+  const isTodayQuery =
+    q.includes("today") ||
+    q.includes("current date") ||
+    q.includes("days colour") ||
+    q.includes("day's colour") ||
+    q.includes("days color") ||
+    q.includes("day's color") ||
+    q.includes("day colour") ||
+    q.includes("day color") ||
+    q.includes("இன்று") ||
+    q.includes("இன்றைய") ||
+    q.includes("இன்னைக்கு") ||
+    q.includes("இன்றைக்கு");
+
+  if (isTodayQuery) {
+    const todayKey = getIndianDateKey();
+    const todayDay = DATE_TO_NAVARATHIRI_DAY[todayKey] || 3;
+    return {
+      type: "navarathiri-day",
+      day: todayDay,
+      isToday: true,
+      ...NAVARATHIRI_DAYS[todayDay],
+    };
+  }
+
+  /* Specific Date Queries (e.g. October 11 to 20) */
+  const datePatterns = [
+    { regex: /(?:october|oct|அக்டோபர்)\s*11\b|\b11(?:th)?\s*(?:october|oct)\b/, day: 1 },
+    { regex: /(?:october|oct|அக்டோபர்)\s*12\b|\b12(?:th)?\s*(?:october|oct)\b/, day: 2 },
+    { regex: /(?:october|oct|அக்டோபர்)\s*13\b|\b13(?:th)?\s*(?:october|oct)\b/, day: 3 },
+    { regex: /(?:october|oct|அக்டோபர்)\s*14\b|\b14(?:th)?\s*(?:october|oct)\b/, day: 4 },
+    { regex: /(?:october|oct|அக்டோபர்)\s*15\b|\b15(?:th)?\s*(?:october|oct)\b/, day: 5 },
+    { regex: /(?:october|oct|அக்டோபர்)\s*16\b|\b16(?:th)?\s*(?:october|oct)\b/, day: 6 },
+    { regex: /(?:october|oct|அக்டோபர்)\s*17\b|\b17(?:th)?\s*(?:october|oct)\b/, day: 7 },
+    { regex: /(?:october|oct|அக்டோபர்)\s*18\b|\b18(?:th)?\s*(?:october|oct)\b/, day: 8 },
+    { regex: /(?:october|oct|அக்டோபர்)\s*19\b|\b19(?:th)?\s*(?:october|oct)\b/, day: 9 },
+    { regex: /(?:october|oct|அக்டோபர்)\s*20\b|\b20(?:th)?\s*(?:october|oct)\b/, day: 10 },
+  ];
+
+  for (const { regex, day } of datePatterns) {
+    if (regex.test(q)) {
+      return {
+        type: "navarathiri-day",
+        day,
+        ...NAVARATHIRI_DAYS[day],
+      };
+    }
+  }
+
+  /* Dussehra / Vijayadashami */
+  if (
+    q.includes("vijayadashami") ||
+    q.includes("dussehra") ||
+    q.includes("dasara") ||
+    q.includes("விஜயதசமி") ||
+    q.includes("தசரா")
+  ) {
+    return {
+      type: "navarathiri-day",
+      day: 10,
+      ...NAVARATHIRI_DAYS[10],
+    };
+  }
+
+  /* Navarathiri day match (e.g. Day 1 to Day 10) */
+  const dayMatch = q.match(/(?:day|நாள்)\s*(\d+)/);
   if (dayMatch) {
     const day = parseInt(dayMatch[1], 10);
-    if (day >= 1 && day <= 9) {
+    if (day >= 1 && day <= 10) {
       return {
         type: "navarathiri-day",
         day,
@@ -264,14 +415,15 @@ const detectVisual = (question) => {
   /* Tamil day words */
   const tamilDayWords = {
     முதல்: 1, முதலா: 1, ஒன்றா: 1,
-    இரண்டா: 2, இரண்டா: 2,
-    மூன்றா: 3, மூன்றா: 3,
+    இரண்டா: 2, ரெண்டா: 2,
+    மூன்றா: 3, மூணாம்: 3,
     நான்கா: 4, நாலா: 4,
     ஐந்தா: 5, அஞ்சா: 5,
     ஆறா: 6,
     ஏழா: 7,
     எட்டா: 8,
     ஒன்பதா: 9,
+    பத்தா: 10,
   };
 
   for (const [word, day] of Object.entries(tamilDayWords)) {
@@ -913,7 +1065,9 @@ function App() {
         <div className="visual-card devotional-sanctum-card">
           <div className="visual-header">
             <span className="visual-header-badge">
-              🌸 {language === "tamil" ? `நவராத்திரி நாள் ${visual.day}` : `Navarathiri Day ${visual.day}`}
+              🌸 {language === "tamil"
+                   ? (visual.day === 10 ? "விஜயதசமி / தசரா திருநாள்" : `நவராத்திரி நாள் ${visual.day}`)
+                   : (visual.day === 10 ? "Vijayadashami / Dussehra" : `Navarathiri Day ${visual.day}`)}
             </span>
             <span className="devotional-mantra-pill">{info.mantra}</span>
           </div>
@@ -932,6 +1086,16 @@ function App() {
 
             <div className="single-day-content">
               <div className="day-meta-tags">
+                {visual.isToday && (
+                  <span className="meta-tag today-tag">
+                    ✨ {language === "tamil" ? "இன்றைய திருநாள் (TODAY)" : "Today's Sacred Day (TODAY)"}
+                  </span>
+                )}
+                {info.date && (
+                  <span className="meta-tag date-tag">
+                    📅 {language === "tamil" ? info.dateTamil : info.date}
+                  </span>
+                )}
                 <span className="meta-tag color-tag" style={{ borderColor: info.colorCode }}>
                   🎨 {language === "tamil" ? `வர்ணம்: ${info.colorTamil}` : `Color: ${info.color}`}
                 </span>
@@ -943,7 +1107,9 @@ function App() {
               <h3>
                 {language === "tamil" ? info.goddessTamil : info.goddess}
                 <span className="divine-epithet">
-                  {language === "tamil" ? " • ஸ்ரீ நவதுர்க்கை" : " • Sri Navadurga"}
+                  {language === "tamil"
+                    ? (visual.day === 10 ? " • வெற்றித் திருநாள்" : " • ஸ்ரீ நவதுர்க்கை")
+                    : (visual.day === 10 ? " • Victory of Good over Evil" : " • Sri Navadurga")}
                 </span>
               </h3>
 

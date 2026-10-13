@@ -33,12 +33,154 @@ const KNOWLEDGE = fs.existsSync(KNOWLEDGE_PATH)
   : "";
 if (!KNOWLEDGE) console.warn("WARNING: knowledge.txt missing or empty.");
 
+const NAVARATHIRI_CALENDAR_2026 = {
+  "2026-10-11": {
+    day: 1,
+    dateStr: "Sunday, October 11, 2026",
+    dateStrTa: "அக்டோபர் 11, 2026, ஞாயிற்றுக்கிழமை",
+    goddess: "Maa Shailputri",
+    goddessTa: "அன்னை சைலபுத்திரி",
+    colour: "Orange",
+    colourTa: "ஆரஞ்சு (Orange)",
+  },
+  "2026-10-12": {
+    day: 2,
+    dateStr: "Monday, October 12, 2026",
+    dateStrTa: "அக்டோபர் 12, 2026, திங்கட்கிழமை",
+    goddess: "Maa Brahmacharini",
+    goddessTa: "அன்னை பிரம்மசாரிணி",
+    colour: "White",
+    colourTa: "வெள்ளை (White)",
+  },
+  "2026-10-13": {
+    day: 3,
+    dateStr: "Tuesday, October 13, 2026",
+    dateStrTa: "அக்டோபர் 13, 2026, செவ்வாய்க்கிழமை",
+    goddess: "Maa Chandraghanta",
+    goddessTa: "அன்னை சந்திரகாந்தா",
+    colour: "Red",
+    colourTa: "சிவப்பு (Red)",
+  },
+  "2026-10-14": {
+    day: 4,
+    dateStr: "Wednesday, October 14, 2026",
+    dateStrTa: "அக்டோபர் 14, 2026, புதன்கிழமை",
+    goddess: "Maa Kushmanda",
+    goddessTa: "அன்னை கூஷ்மாண்டா",
+    colour: "Royal Blue",
+    colourTa: "ராயல் நீலம் (Royal Blue)",
+  },
+  "2026-10-15": {
+    day: 5,
+    dateStr: "Thursday, October 15, 2026",
+    dateStrTa: "அக்டோபர் 15, 2026, வியாழக்கிழமை",
+    goddess: "Maa Skandamata",
+    goddessTa: "அன்னை ஸ்கந்தமாதா",
+    colour: "Yellow",
+    colourTa: "மஞ்சள் (Yellow)",
+  },
+  "2026-10-16": {
+    day: 6,
+    dateStr: "Friday, October 16, 2026",
+    dateStrTa: "அக்டோபர் 16, 2026, வெள்ளிக்கிழமை",
+    goddess: "Maa Katyayani",
+    goddessTa: "அன்னை காத்யாயினி",
+    colour: "Green",
+    colourTa: "பச்சை (Green)",
+  },
+  "2026-10-17": {
+    day: 7,
+    dateStr: "Saturday, October 17, 2026",
+    dateStrTa: "அக்டோபர் 17, 2026, சனிக்கிழமை",
+    goddess: "Maa Kalaratri",
+    goddessTa: "அன்னை காலராத்திரி",
+    colour: "Grey",
+    colourTa: "சாம்பல் (Grey)",
+  },
+  "2026-10-18": {
+    day: 8,
+    dateStr: "Sunday, October 18, 2026",
+    dateStrTa: "அக்டோபர் 18, 2026, ஞாயிற்றுக்கிழமை",
+    goddess: "Maa Mahagauri",
+    goddessTa: "அன்னை மஹாகௌரி",
+    colour: "Purple",
+    colourTa: "ஊதா (Purple)",
+  },
+  "2026-10-19": {
+    day: 9,
+    dateStr: "Monday, October 19, 2026",
+    dateStrTa: "அக்டோபர் 19, 2026, திங்கட்கிழமை",
+    goddess: "Maa Siddhidatri",
+    goddessTa: "அன்னை சித்திதாத்ரி",
+    colour: "Peacock Green",
+    colourTa: "மயில் பச்சை (Peacock Green)",
+  },
+  "2026-10-20": {
+    day: 10,
+    dateStr: "Tuesday, October 20, 2026",
+    dateStrTa: "அக்டோபர் 20, 2026, செவ்வாய்க்கிழமை",
+    celebration: "Vijayadashami / Dussehra (Victory of Good over Evil)",
+    celebrationTa: "விஜயதசமி / தசரா (தீமையை அழித்து நன்மையின் வெற்றி)",
+    colour: "Festive Red and Gold",
+    colourTa: "மங்கள சிவப்பு மற்றும் பொன் நிறம்",
+  },
+};
+
+function getIndianDateInfo() {
+  const now = new Date();
+  const istDateKey = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Kolkata",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(now); // e.g. "2026-10-13"
+
+  const istDateFormatted = new Intl.DateTimeFormat("en-US", {
+    timeZone: "Asia/Kolkata",
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  }).format(now);
+
+  const istDateFormattedTa = new Intl.DateTimeFormat("ta-IN", {
+    timeZone: "Asia/Kolkata",
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  }).format(now);
+
+  const todayNavarathiri = NAVARATHIRI_CALENDAR_2026[istDateKey];
+  return { istDateKey, istDateFormatted, istDateFormattedTa, todayNavarathiri };
+}
+
 const SYSTEM_PROMPT = `You are Navarathiri AI, a warm, friendly woman who loves Hindu festivals, epics and scriptures. You are talking out loud with someone, so write exactly the way a person would speak.
 
 CREATOR & IDENTITY:
 - If the user asks who created, made, or developed you ("Who created you?", "Who built you?", "உன்னை உருவாக்கியவர் யார்?", "உன்னை யார் உருவாக்கியது?", etc.), respond with warmth, respect, and professional pride:
   - In Tamil: "என்னை உருவாக்கியவர் முத்துகிருஷ்ணன். இவர் பி.சி.ஏ (BCA) மூன்றாம் ஆண்டு பயிலும் அர்ப்பணிப்புமிக்க மாணவர். ஆன்மீக அறிவையும் நவீன ஏஐ தொழில்நுட்பத்தையும் இணைக்கும் உன்னத நோக்கத்துடன் என்னை வடிவமைத்துள்ளார்."
   - In English: "I was created by Muthukrishnan, a dedicated 3rd-year BCA student, who developed me to seamlessly blend sacred Indian spiritual wisdom with cutting-edge Artificial Intelligence."
+
+CURRENT DATE & TODAY'S COLOUR / GODDESS INSTRUCTIONS:
+- Whenever the user asks:
+  - "what's today's colour?" / "what colour should I wear today?" / "இன்றைய நிறம் என்ன?"
+  - "what's today's date?" / "whats today date?" / "இன்றைய தேதி என்ன?"
+  - "what day of Navratri is today?" / "which goddess is worshipped today?" / "இன்று என்ன நாள் / எந்த அம்மன்?"
+  - or any related inquiry about today / current date:
+  - YOU MUST ALWAYS refer to the CURRENT INDIAN DATE (IST - Asia/Kolkata) provided in the LIVE SYSTEM CLOCK section below.
+  - State today's Indian date, the Navarathiri day number, the revered Goddess (Maa), and the exact auspicious colour of the day.
+  - Official 2026 Navarathiri Schedule:
+    Day 1 (Sunday, October 11, 2026): Maa Shailputri | Colour: Orange
+    Day 2 (Monday, October 12, 2026): Maa Brahmacharini | Colour: White
+    Day 3 (Tuesday, October 13, 2026): Maa Chandraghanta | Colour: Red
+    Day 4 (Wednesday, October 14, 2026): Maa Kushmanda | Colour: Royal Blue
+    Day 5 (Thursday, October 15, 2026): Maa Skandamata | Colour: Yellow
+    Day 6 (Friday, October 16, 2026): Maa Katyayani | Colour: Green
+    Day 7 (Saturday, October 17, 2026): Maa Kalaratri | Colour: Grey
+    Day 8 (Sunday, October 18, 2026): Maa Mahagauri | Colour: Purple
+    Day 9 (Monday, October 19, 2026): Maa Siddhidatri | Colour: Peacock Green
+    Day 10 (Tuesday, October 20, 2026): Vijayadashami / Dussehra | Celebration: Victory of Good over Evil
 
 LANGUAGE
 - Reply in the language the user used. Tamil script in, Tamil out (natural spoken Tamil, not stiff written Tamil). English in, English out.
@@ -57,11 +199,29 @@ ACCURACY
 - If you are not confident, say so in one short sentence in the user's language and suggest asking a temple priest or scholar. Never invent details.
 - If the question is completely unrelated to Hindu festivals, epics, scriptures, or your creator Muthukrishnan, say kindly that it's outside what you cover and invite a question about Navarathiri, Ramayana or Mahabharata.`;
 
-// Identical on every request -> enables implicit caching on the prefix
-const SYSTEM_INSTRUCTION = `${SYSTEM_PROMPT}\n\nKNOWLEDGE:\n${KNOWLEDGE}`;
+function getSystemInstruction(preferredLanguage = "tamil") {
+  const { istDateFormatted, istDateFormattedTa, todayNavarathiri } = getIndianDateInfo();
+  let liveClock = `Current Indian Date (IST - Asia/Kolkata): ${istDateFormatted} (${istDateFormattedTa}).\n`;
+  if (todayNavarathiri) {
+    if (todayNavarathiri.day === 10) {
+      liveClock += `TODAY IS DAY 10 (VIJAYADASHAMI / DUSSEHRA):\n- Date: ${todayNavarathiri.dateStr}\n- Celebration: ${todayNavarathiri.celebration}\n- In Tamil: ${todayNavarathiri.celebrationTa}\n`;
+    } else {
+      liveClock += `TODAY IS NAVARATHIRI DAY ${todayNavarathiri.day}:\n- Date: ${todayNavarathiri.dateStr}\n- Goddess: ${todayNavarathiri.goddess} (${todayNavarathiri.goddessTa})\n- Auspicious Colour of the Day: ${todayNavarathiri.colour} (${todayNavarathiri.colourTa})\n`;
+    }
+  } else {
+    liveClock += `Today falls outside the 10-day Sharada Navarathiri 2026 festival period (Oct 11 to Oct 20, 2026).\n`;
+  }
+
+  const langNote = `\nLANGUAGE DIRECTIVE:
+- Preferred language mode: ${preferredLanguage.toUpperCase()}.
+- If the user writes or speaks in English, reply strictly in English.
+- If the user writes or speaks in Tamil or Tamil in English letters, reply in Tamil script.
+- Match the user's inquiry language precisely.\n`;
+
+  return `${SYSTEM_PROMPT}${langNote}\n\n[LIVE SYSTEM CLOCK - IST (Asia/Kolkata)]:\n${liveClock}\n\nKNOWLEDGE:\n${KNOWLEDGE}`;
+}
 
 const GEN_CONFIG = {
-  systemInstruction: SYSTEM_INSTRUCTION,
   temperature: 0.7,
   topP: 0.9,
   maxOutputTokens: 256,
@@ -83,6 +243,7 @@ function buildContents(question, history) {
 /* ---------- Streaming endpoint (use this for voice) ---------- */
 app.post("/api/chat/stream", async (req, res) => {
   const question = req.body?.question?.trim();
+  const language = req.body?.language || "tamil";
   if (!question) return res.status(400).json({ error: "Question is required" });
 
   res.setHeader("Content-Type", "text/event-stream");
@@ -97,7 +258,11 @@ app.post("/api/chat/stream", async (req, res) => {
     const stream = await ai.models.generateContentStream({
       model: MODEL,
       contents: buildContents(question, req.body.history),
-      config: { ...GEN_CONFIG, abortSignal: controller.signal },
+      config: {
+        ...GEN_CONFIG,
+        systemInstruction: getSystemInstruction(language),
+        abortSignal: controller.signal,
+      },
     });
 
     for await (const chunk of stream) {
@@ -118,12 +283,16 @@ app.post("/api/chat/stream", async (req, res) => {
 /* ---------- Non-streaming fallback (same behaviour, one JSON reply) ---------- */
 app.post("/api/chat", async (req, res) => {
   const question = req.body?.question?.trim();
+  const language = req.body?.language || "tamil";
   if (!question) return res.status(400).json({ error: "Question is required" });
   try {
     const result = await ai.models.generateContent({
       model: MODEL,
       contents: buildContents(question, req.body.history),
-      config: GEN_CONFIG,
+      config: {
+        ...GEN_CONFIG,
+        systemInstruction: getSystemInstruction(language),
+      },
     });
     res.json({ answer: (result.text || "").trim() });
   } catch (err) {
